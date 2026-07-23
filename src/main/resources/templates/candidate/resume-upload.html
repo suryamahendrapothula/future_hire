@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Upload Resume')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Upload Container -->
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                
+                <div class="mb-4">
+                    <a th:href="@{/candidate/dashboard}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary text-white py-3 px-4">
+                        <h5 class="fw-bold mb-0"><i class="bi bi-file-earmark-arrow-up me-2"></i>AI Resume Scanner</h5>
+                    </div>
+                    
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <div class="alert alert-info border-0 shadow-sm mb-4" role="alert">
+                            <h6 class="alert-heading fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i>How it works:</h6>
+                            <ul class="small mb-0 ps-3">
+                                <li>Upload your resume in PDF or Word (DOCX) format.</li>
+                                <li>Our parser extracts your core tech stack, experience, and projects.</li>
+                                <li>The AI matching system scores your profile and suggests matching job vacancies.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Upload Form -->
+                        <form method="post" enctype="multipart/form-data" th:action="@{/candidate/resume/upload}">
+                            
+                            <!-- Custom Drag-and-Drop Area -->
+                            <div class="border border-2 border-dashed border-primary bg-light rounded-4 text-center py-5 px-4 mb-4 position-relative upload-zone">
+                                <i class="bi bi-cloud-arrow-up-fill text-primary display-3 mb-3"></i>
+                                <h5 class="fw-bold text-dark mb-1">Choose file or drag here</h5>
+                                <p class="text-muted small mb-3">Supported formats: PDF, DOCX (Max 10MB)</p>
+                                
+                                <div class="col-sm-8 mx-auto">
+                                    <input type="file" class="form-control rounded-3" name="file" accept=".pdf,.docx,.doc" required>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm py-3 fw-bold">
+                                <i class="bi bi-stars me-1"></i> Scan & Extract Profile
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

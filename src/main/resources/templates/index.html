@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('FutureHire - AI-Powered Recruitment Platform')}"></head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Hero Section -->
+    <section class="hero d-flex align-items-center">
+        <div class="container py-5">
+            <div class="row align-items-center g-5">
+                
+                <!-- Left Side -->
+                <div class="col-lg-6">
+                    <span class="hero-badge">
+                        <i class="bi bi-stars text-primary me-1"></i> AI-Powered Recruitment Platform
+                    </span>
+                    <h1 class="hero-title fw-extrabold mt-3">
+                        Hire Smarter.<br>Powered by AI.
+                    </h1>
+                    <p class="hero-description text-secondary">
+                        Screen resumes, conduct AI interviews, and identify the best candidates—all in one intelligent hiring platform.
+                    </p>
+                    <div class="hero-buttons d-flex flex-wrap gap-3 mt-4">
+                        <a th:href="@{/candidate/register}" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow">
+                            Get Started
+                        </a>
+                        <a href="#about" class="btn btn-outline-primary btn-lg rounded-pill px-4 py-3">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side -->
+                <div class="col-lg-6 text-center">
+                    <div class="hero-dashboard shadow-lg rounded-4 p-4 p-md-5">
+                        <div class="dashboard-header mb-4">
+                            <span class="dashboard-badge">
+                                <i class="bi bi-robot me-1"></i> AI Powered
+                            </span>
+                            <h3 class="fw-bold">AI Resume Analysis</h3>
+                            <p class="text-muted small">Instant candidate evaluation powered by AI.</p>
+                        </div>
+
+                        <div class="score-section my-4">
+                            <h1 class="display-3 fw-bold text-primary mb-1">92%</h1>
+                            <span class="text-secondary fw-semibold">Resume Match</span>
+                            <div class="progress mt-3 mx-auto" style="height: 10px; max-width: 250px;">
+                                <div class="progress-bar" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="skills-section my-4">
+                            <h6 class="fw-bold mb-3">Skills Extracted</h6>
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">Java</span>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">Spring Boot</span>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">Angular</span>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">AWS</span>
+                            </div>
+                        </div>
+
+                        <div class="verdict-card bg-success-subtle text-success p-3 rounded-3 mt-4 border border-success-subtle">
+                            <small class="d-block uppercase fw-bold mb-1">AI Verdict</small>
+                            <h5 class="fw-bold mb-0"><i class="bi bi-check-circle-fill me-1"></i> Strong Candidate</h5>
+                            <p class="small mb-0 text-success-emphasis mt-1">96% Confidence Score</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features py-5" id="features">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold">Why Choose FutureHire</h2>
+                <p class="section-subtitle text-secondary">Smarter hiring powered by Artificial Intelligence.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="feature-card shadow-sm border-0 p-4 h-100 rounded-4 text-center">
+                        <div class="bg-primary-subtle text-primary d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-file-earmark-text fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">Resume Parsing</h4>
+                        <p class="text-secondary small">AI automatically extracts skills, education, and experience from resumes.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="feature-card shadow-sm border-0 p-4 h-100 rounded-4 text-center">
+                        <div class="bg-success-subtle text-success d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-robot fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">AI Interview</h4>
+                        <p class="text-secondary small">Conduct intelligent interviews with adaptive AI-generated questions.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="feature-card shadow-sm border-0 p-4 h-100 rounded-4 text-center">
+                        <div class="bg-warning-subtle text-warning d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-graph-up-arrow fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">Recruiter Analytics</h4>
+                        <p class="text-secondary small">Get AI insights, candidate scores, and hiring recommendations instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works py-5 bg-white" id="how-it-works">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold">How FutureHire Works</h2>
+                <p class="section-subtitle text-secondary">A simple AI-powered hiring workflow.</p>
+            </div>
+
+            <div class="row g-4 text-center">
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card shadow-sm p-4 h-100 rounded-4">
+                        <div class="step-number mb-3">1</div>
+                        <i class="bi bi-cloud-arrow-up text-primary display-6 d-block mb-3"></i>
+                        <h5 class="fw-bold">Upload Resume</h5>
+                        <p class="text-secondary small mb-0">Candidate uploads a resume.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card shadow-sm p-4 h-100 rounded-4">
+                        <div class="step-number mb-3">2</div>
+                        <i class="bi bi-cpu text-primary display-6 d-block mb-3"></i>
+                        <h5 class="fw-bold">AI Analysis</h5>
+                        <p class="text-secondary small mb-0">AI extracts skills and experience.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card shadow-sm p-4 h-100 rounded-4">
+                        <div class="step-number mb-3">3</div>
+                        <i class="bi bi-chat-dots text-primary display-6 d-block mb-3"></i>
+                        <h5 class="fw-bold">AI Interview</h5>
+                        <p class="text-secondary small mb-0">Dynamic interview questions are generated.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="step-card shadow-sm p-4 h-100 rounded-4">
+                        <div class="step-number mb-3">4</div>
+                        <i class="bi bi-award text-primary display-6 d-block mb-3"></i>
+                        <h5 class="fw-bold">Recruiter Decision</h5>
+                        <p class="text-secondary small mb-0">Recruiters review AI reports and shortlist candidates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about py-5" id="about">
+        <div class="container py-5">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <h2 class="section-title fw-bold">About FutureHire</h2>
+                    <p class="section-subtitle text-secondary">
+                        FutureHire is an AI-powered recruitment platform designed to simplify hiring for companies and improve the job application experience for candidates.
+                    </p>
+                    <ul class="list-unstyled mt-4 d-flex flex-column gap-3">
+                        <li class="d-flex align-items-center gap-2 text-secondary fs-5">
+                            <i class="bi bi-check-circle-fill text-primary"></i> AI Resume Parsing
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary fs-5">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Intelligent AI Interviews
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary fs-5">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Recruiter Analytics Dashboard
+                        </li>
+                        <li class="d-flex align-items-center gap-2 text-secondary fs-5">
+                            <i class="bi bi-check-circle-fill text-primary"></i> Smart Candidate Matching
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <i class="bi bi-people-fill text-primary display-1 opacity-25"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact py-5 bg-white" id="contact">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold">Contact Us</h2>
+                <p class="section-subtitle text-secondary">Have questions? We'd love to hear from you.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-card shadow p-4 p-md-5 rounded-4">
+                        <form onsubmit="alert('Message sent successfully!'); return false;">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control rounded-3 py-3" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control rounded-3 py-3" placeholder="Email Address" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control rounded-3 py-3" placeholder="Subject" required>
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control rounded-3 p-3" rows="5" placeholder="Write your message..." required></textarea>
+                                </div>
+                                <div class="col-12 text-center mt-4">
+                                    <button class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow">
+                                        Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Interview Q&A Evaluation Report')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Container -->
+    <div class="container my-5">
+        
+        <!-- Navigation Back -->
+        <div class="mb-4">
+            <a th:href="@{/recruiter/jobs/{id}/applicants(id=${interview.application.job.id})}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to Applicants
+            </a>
+        </div>
+
+        <!-- Candidate Info Banner -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-body p-4 bg-white">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary-subtle text-primary p-3 rounded-circle">
+                                <i class="bi bi-person-workspace fs-2"></i>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-1" th:text="${interview.application.candidate.fullName}">John Doe</h3>
+                                <p class="text-secondary mb-0">
+                                    Applied for <span class="fw-semibold text-primary" th:text="${interview.application.job.title}">Job Role</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="d-inline-block text-start p-3 bg-light rounded-4 border border-light">
+                            <small class="text-muted d-block uppercase fw-semibold mb-1">Final AI Score</small>
+                            <h2 class="fw-extrabold text-success mb-0" th:text="${interview.overallScore != null ? interview.overallScore + '%' : '0%'}">85%</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <div class="mb-4">
+            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-chat-left-text text-primary me-2"></i>Evaluation Question Transcript</h4>
+            <p class="text-muted small">Review individual questions asked during the AI-adaptive screening session, candidate responses, and dynamic scoring feedback.</p>
+        </div>
+
+        <!-- Q&A Section -->
+        <div class="d-flex flex-column gap-4 mb-5">
+            <th:block th:each="q, iter : ${questions}">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <!-- Question Header -->
+                    <div class="card-header bg-white border-0 pt-4 px-4 pb-0 d-flex justify-content-between align-items-start gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary rounded-pill px-3 py-1" th:text="'Q' + ${iter.count}">Q1</span>
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill" th:text="${q.topic}">Skill</span>
+                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill" th:text="${q.difficulty}">Medium</span>
+                        </div>
+                        
+                        <!-- Question Score badge -->
+                        <th:block th:if="${answers.containsKey(q.id)}">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill fw-bold" 
+                                  th:text="${answers.get(q.id).score + '%'}">
+                                90%
+                            </span>
+                        </th:block>
+                        <th:block th:unless="${answers.containsKey(q.id)}">
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill">Unanswered</span>
+                        </th:block>
+                    </div>
+
+                    <!-- Question Content -->
+                    <div class="card-body p-4">
+                        <!-- The Question -->
+                        <h5 class="fw-bold text-dark mb-4" th:text="${q.question}">Explain OOP principles.</h5>
+                        
+                        <!-- Candidate's Answer -->
+                        <div class="p-3 bg-light rounded-3 mb-4">
+                            <small class="text-muted fw-semibold d-block mb-2"><i class="bi bi-person-fill text-secondary me-1"></i>Candidate's Answer:</small>
+                            <p class="mb-0 text-dark font-monospace small" 
+                               th:text="${answers.containsKey(q.id) ? answers.get(q.id).candidateAnswer : 'Candidate did not complete this question.'}">
+                                Answer text...
+                            </p>
+                        </div>
+
+                        <!-- AI Feedback -->
+                        <div class="p-3 bg-primary-subtle rounded-3 border-start border-4 border-primary" th:if="${answers.containsKey(q.id) and answers.get(q.id).aiFeedback != null}">
+                            <small class="text-primary fw-semibold d-block mb-2"><i class="bi bi-robot me-1"></i>AI Evaluator Justification:</small>
+                            <p class="mb-0 text-dark small lh-lg" th:text="${answers.get(q.id).aiFeedback}">
+                                AI justification feedback...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

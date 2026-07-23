@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(${job.id != null} ? 'Edit Job Posting' : 'Create Job Posting')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Container -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                
+                <div class="mb-4">
+                    <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Jobs
+                    </a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary text-white py-3 px-4">
+                        <h4 class="fw-bold mb-0" th:text="${job.id != null} ? 'Edit Job Posting' : 'Create Job Posting'">Create Job</h4>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <form th:action="@{/recruiter/jobs/save}" th:object="${job}" method="post">
+                            <input type="hidden" th:field="*{id}"> 
+
+                            <div class="row g-4">
+                                
+                                <!-- Core Details Section -->
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 text-dark"><i class="bi bi-info-circle me-1"></i>Core Details</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Job Title</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{title}" placeholder="Senior Java Developer" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Company Name</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{company}" placeholder="FutureHire Ltd." required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Location</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{location}" placeholder="New York, NY or Remote">
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label fw-semibold">Employment Type</label>
+                                            <select class="form-select rounded-3" th:field="*{employmentType}">
+                                                <option value="Full-Time">Full-Time</option>
+                                                <option value="Internship">Internship</option>
+                                                <option value="Part-Time">Part-Time</option>
+                                                <option value="Contract">Contract</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label fw-semibold">Experience Required</label>
+                                            <select class="form-select rounded-3" th:field="*{experienceRequired}">
+                                                <option value="Fresher">Fresher</option>
+                                                <option value="1-3 Years">1-3 Years</option>
+                                                <option value="3-5 Years">3-5 Years</option>
+                                                <option value="5+ Years">5+ Years</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Salary Range</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{salary}" placeholder="$90,000 - $110,000">
+                                    </div>
+                                </div>
+
+                                <!-- Requirements & Description Section -->
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 text-dark"><i class="bi bi-card-text me-1"></i>Requirements & Description</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Required Skills (Comma separated)</label>
+                                        <textarea class="form-control rounded-3" rows="3" th:field="*{requiredSkills}" placeholder="Java, Spring Boot, Hibernate, MySQL, Git"></textarea>
+                                        <div class="form-text text-muted small"><i class="bi bi-info-circle me-1"></i> Used by AI scanner for matches.</div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Detailed Job Description</label>
+                                        <textarea class="form-control rounded-3" rows="6" th:field="*{description}" placeholder="List responsibilities, daily duties, team context, and other standard expectations..."></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <hr class="my-4 text-muted opacity-25">
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-end gap-2">
+                                <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary rounded-pill px-4">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm">
+                                    <i class="bi bi-check-lg me-1"></i> 
+                                    <span th:text="${job.id != null} ? 'Update Job Posting' : 'Publish Job Listing'">Publish Job</span>
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

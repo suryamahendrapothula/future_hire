@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Edit Profile')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Edit Profile Container -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header bg-primary text-white py-3 px-4">
+                        <h4 class="fw-bold mb-0"><i class="bi bi-pencil-square me-2"></i>Edit Profile Details</h4>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <form th:action="@{/candidate/profile/edit}" th:object="${profile}" method="post">
+                            <input type="hidden" th:field="*{id}"/>
+
+                            <div class="row g-4">
+                                
+                                <!-- Personal Info Section -->
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 text-dark"><i class="bi bi-person me-1"></i>Personal Information</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Phone Number</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{phone}" placeholder="+1 (555) 019-2834">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Date of Birth</label>
+                                        <input type="date" class="form-control rounded-3" th:field="*{dateOfBirth}">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Gender</label>
+                                        <select class="form-select rounded-3" th:field="*{gender}">
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Prefer Not to Say">Prefer Not to Say</option>
+                                        </select>
+                                    </div>
+
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 mt-4 text-dark"><i class="bi bi-geo-alt me-1"></i>Location & Address</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Street Address</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{address}" placeholder="123 Main St">
+                                    </div>
+
+                                    <div class="row g-2">
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label fw-semibold">City</label>
+                                            <input type="text" class="form-control rounded-3" th:field="*{city}" placeholder="New York">
+                                        </div>
+                                        <div class="col-sm-6 mb-3">
+                                            <label class="form-label fw-semibold">State</label>
+                                            <input type="text" class="form-control rounded-3" th:field="*{state}" placeholder="NY">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Country</label>
+                                        <input type="text" class="form-control rounded-3" th:field="*{country}" placeholder="United States">
+                                    </div>
+                                </div>
+
+                                <!-- Professional Links & About Section -->
+                                <div class="col-md-6">
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 text-dark"><i class="bi bi-link-45deg me-1"></i>Professional Links</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">LinkedIn Profile URL</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i class="bi bi-linkedin text-primary"></i></span>
+                                            <input type="url" class="form-control rounded-end-3" th:field="*{linkedin}" placeholder="https://linkedin.com/in/username">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">GitHub Profile URL</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i class="bi bi-github text-dark"></i></span>
+                                            <input type="url" class="form-control rounded-end-3" th:field="*{github}" placeholder="https://github.com/username">
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Portfolio URL</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i class="bi bi-globe text-success"></i></span>
+                                            <input type="url" class="form-control rounded-end-3" th:field="*{portfolio}" placeholder="https://myportfolio.com">
+                                        </div>
+                                    </div>
+
+                                    <h5 class="fw-bold border-bottom pb-2 mb-3 mt-4 text-dark"><i class="bi bi-file-person me-1"></i>Professional Summary</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">About Me</label>
+                                        <textarea class="form-control rounded-3" rows="6" th:field="*{about}" placeholder="Briefly describe your career background, key accomplishments, or what you're looking for in your next role..."></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <hr class="my-4 text-muted opacity-25">
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-end gap-2">
+                                <a th:href="@{/candidate/profile}" class="btn btn-outline-secondary rounded-pill px-4">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm">
+                                    <i class="bi bi-check-lg me-1"></i> Save Profile Details
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

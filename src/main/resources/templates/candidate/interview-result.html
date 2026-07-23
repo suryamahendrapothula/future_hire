@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Interview Completed')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Container -->
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                
+                <div class="card border-0 shadow-lg rounded-4 text-center p-5 overflow-hidden position-relative">
+                    <!-- Top accent border -->
+                    <div class="position-absolute top-0 start-0 w-100 bg-success" style="height: 6px;"></div>
+
+                    <div class="card-body py-4">
+                        
+                        <!-- Success Tick Animation Placeholder -->
+                        <div class="bg-success-subtle text-success d-inline-flex p-4 rounded-circle mb-4 shadow-sm animate-bounce">
+                            <i class="bi bi-check-lg display-4 fw-bold"></i>
+                        </div>
+
+                        <h2 class="fw-extrabold text-success mb-2">Interview Completed</h2>
+                        <h5 class="text-dark mb-4">Thank you for attending!</h5>
+                        
+                        <p class="text-secondary lh-lg mb-5">
+                            Your technical answers have been recorded successfully. Our recruitment team and the automated evaluator will analyze your inputs shortly.
+                        </p>
+
+                        <a th:href="@{/candidate/dashboard}" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm">
+                            <i class="bi bi-house-door me-1"></i> Return to Dashboard
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

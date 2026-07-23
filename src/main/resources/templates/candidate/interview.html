@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('AI Interview Instructions')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Instructions Container -->
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <!-- Top banner style header -->
+                    <div class="bg-success text-white text-center py-4 px-4 position-relative">
+                        <div class="bg-white text-success d-inline-flex p-3 rounded-circle mb-3 shadow">
+                            <i class="bi bi-robot fs-1"></i>
+                        </div>
+                        <h3 class="fw-bold mb-1">AI Interview Assistant</h3>
+                        <p class="text-white-50 small mb-0">Evaluate your technical fit through automated questions</p>
+                    </div>
+                    
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <h5 class="fw-bold mb-3 text-dark">Important Instructions:</h5>
+                        
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <span class="text-success fs-5"><i class="bi bi-patch-check-fill"></i></span>
+                            <div>
+                                <h6 class="fw-semibold mb-1">10 Curated Questions</h6>
+                                <p class="text-muted small mb-0">The interview comprises ten questions covering OOP, Spring Boot, Databases, and general IT concepts.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <span class="text-success fs-5"><i class="bi bi-patch-check-fill"></i></span>
+                            <div>
+                                <h6 class="fw-semibold mb-1">Adaptive Matching</h6>
+                                <p class="text-muted small mb-0">Questions are mapped against your extracted resume profile and required job roles.</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-3 mb-3">
+                            <span class="text-success fs-5"><i class="bi bi-patch-check-fill"></i></span>
+                            <div>
+                                <h6 class="fw-semibold mb-1">Automated Scoring</h6>
+                                <p class="text-muted small mb-0">Your responses are parsed and graded by the AI recruitment engine to produce a score.</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning border-0 shadow-sm d-flex gap-3 align-items-center my-4" role="alert">
+                            <span class="fs-4 text-warning"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                            <div class="small">
+                                <strong>Session warning:</strong> Do not close or refresh this tab once started. The interview must be completed in one continuous session.
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2 mt-4">
+                            <a th:href="@{/candidate/interview/{id}/start(id=${applicationId})}"
+                               class="btn btn-success btn-lg rounded-pill shadow-sm py-3 fw-bold">
+                                <i class="bi bi-play-fill me-1"></i> Start AI Interview
+                            </a>
+                            <a th:href="@{/candidate/applications}"
+                               class="btn btn-outline-secondary rounded-pill py-2">
+                                Cancel & Back
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

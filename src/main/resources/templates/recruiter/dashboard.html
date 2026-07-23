@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Recruiter Dashboard')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Container -->
+    <div class="container my-5">
+        
+        <!-- Welcome Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h2 class="fw-bold mb-1">Recruiter Dashboard</h2>
+                <p class="text-muted mb-0">Manage job postings, view candidates, and coordinate evaluations.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a th:href="@{/recruiter/jobs/new}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Post a Job
+                </a>
+                <a th:href="@{/recruiter/jobs}" class="btn btn-outline-dark rounded-pill px-4">
+                    <i class="bi bi-list-task me-1"></i> View Jobs
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="row g-4 mb-5">
+            
+            <!-- Jobs Posted Stat -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-primary-subtle text-primary d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-briefcase fs-4"></i>
+                        </div>
+                        <h6 class="text-muted fw-semibold uppercase mb-1">Jobs Posted</h6>
+                        <h2 class="fw-bold text-dark mb-0" th:text="${stats.jobs}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications Stat -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-info-subtle text-info d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-people fs-4"></i>
+                        </div>
+                        <h6 class="text-muted fw-semibold uppercase mb-1">Total Candidates</h6>
+                        <h2 class="fw-bold text-dark mb-0" th:text="${stats.applications}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interviews Stat -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4 text-center">
+                        <div class="bg-warning-subtle text-warning d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-robot fs-4"></i>
+                        </div>
+                        <h6 class="text-muted fw-semibold uppercase mb-1">AI Interviews</h6>
+                        <h2 class="fw-bold text-dark mb-0" th:text="${stats.interviews}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shortlisted Stat -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover border-start border-4 border-success">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted fw-semibold uppercase mb-1">Shortlisted Applications</h6>
+                                <h2 class="fw-bold text-success mb-0" th:text="${stats.shortlisted}">0</h2>
+                            </div>
+                            <span class="bg-success-subtle text-success p-3 rounded-circle"><i class="bi bi-check-circle fs-4"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejected Stat -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover border-start border-4 border-danger">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted fw-semibold uppercase mb-1">Rejected Applications</h6>
+                                <h2 class="fw-bold text-danger mb-0" th:text="${stats.rejected}">0</h2>
+                            </div>
+                            <span class="bg-danger-subtle text-danger p-3 rounded-circle"><i class="bi bi-x-circle fs-4"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

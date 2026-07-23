@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('My Profile')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Container -->
+    <div class="container my-5">
+        
+        <!-- Navigation Breadcrumbs/Buttons -->
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <a th:href="@{/candidate/dashboard}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+            </a>
+            <a th:href="@{/candidate/profile/edit}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-pencil-square me-1"></i> Edit Profile
+            </a>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Left Profile Card -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100">
+                    <div class="card-body">
+                        <!-- Avatar placeholder -->
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-4 shadow" style="width: 100px; height: 100px;">
+                            <i class="bi bi-person-fill fs-1"></i>
+                        </div>
+                        
+                        <h4 class="fw-bold mb-1" th:text="${profile.user.fullName}">John Doe</h4>
+                        <p class="text-muted small mb-3" th:text="${profile.user.email}">john.doe@example.com</p>
+                        
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill mb-4">
+                            <i class="bi bi-mortarboard-fill me-1"></i> Candidate Profile
+                        </span>
+                        
+                        <hr class="my-4 text-muted opacity-25">
+                        
+                        <!-- Social Media Links -->
+                        <h6 class="fw-bold mb-3 text-start"><i class="bi bi-link-45deg me-1"></i>Professional Links</h6>
+                        <div class="d-flex flex-column gap-2 text-start">
+                            <!-- LinkedIn -->
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-linkedin text-primary fs-5"></i>
+                                <span class="fw-semibold small">LinkedIn:</span>
+                                <a th:if="${profile.linkedin != null and !#strings.isEmpty(profile.linkedin)}" th:href="${profile.linkedin}" target="_blank" class="text-decoration-none text-truncate" th:text="${profile.linkedin}">link</a>
+                                <span th:unless="${profile.linkedin != null and !#strings.isEmpty(profile.linkedin)}" class="text-muted small">Not Added</span>
+                            </div>
+                            <!-- GitHub -->
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-github text-dark fs-5"></i>
+                                <span class="fw-semibold small">GitHub:</span>
+                                <a th:if="${profile.github != null and !#strings.isEmpty(profile.github)}" th:href="${profile.github}" target="_blank" class="text-decoration-none text-truncate" th:text="${profile.github}">link</a>
+                                <span th:unless="${profile.github != null and !#strings.isEmpty(profile.github)}" class="text-muted small">Not Added</span>
+                            </div>
+                            <!-- Portfolio -->
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-globe text-success fs-5"></i>
+                                <span class="fw-semibold small">Portfolio:</span>
+                                <a th:if="${profile.portfolio != null and !#strings.isEmpty(profile.portfolio)}" th:href="${profile.portfolio}" target="_blank" class="text-decoration-none text-truncate" th:text="${profile.portfolio}">link</a>
+                                <span th:unless="${profile.portfolio != null and !#strings.isEmpty(profile.portfolio)}" class="text-muted small">Not Added</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Details Card -->
+            <div class="col-lg-8">
+                <div class="d-flex flex-column gap-4 h-100">
+                    
+                    <!-- About Me Card -->
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-journal-text text-primary me-2"></i>About Me</h5>
+                            <p class="text-secondary lh-lg mb-0" th:text="${profile.about != null and !#strings.isEmpty(profile.about) ? profile.about : 'Introduce yourself by adding some information about your career goals, experience, and interests.'}"></p>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information Card -->
+                    <div class="card border-0 shadow-sm rounded-4 flex-grow-1">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4 text-dark"><i class="bi bi-person-lines-fill text-primary me-2"></i>Personal Details</h5>
+                            
+                            <div class="row g-3">
+                                
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3">
+                                        <small class="text-muted d-block uppercase fw-semibold mb-1">Phone Number</small>
+                                        <span class="fw-bold text-dark" th:text="${profile.phone != null and !#strings.isEmpty(profile.phone) ? profile.phone : 'Not Added'}"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3">
+                                        <small class="text-muted d-block uppercase fw-semibold mb-1">Date of Birth</small>
+                                        <span class="fw-bold text-dark" th:text="${profile.dateOfBirth != null and !#strings.isEmpty(profile.dateOfBirth) ? profile.dateOfBirth : 'Not Added'}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3">
+                                        <small class="text-muted d-block uppercase fw-semibold mb-1">Gender</small>
+                                        <span class="fw-bold text-dark" th:text="${profile.gender != null and !#strings.isEmpty(profile.gender) ? profile.gender : 'Not Added'}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded-3">
+                                        <small class="text-muted d-block uppercase fw-semibold mb-1">Country</small>
+                                        <span class="fw-bold text-dark" th:text="${profile.country != null and !#strings.isEmpty(profile.country) ? profile.country : 'Not Added'}"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="p-3 bg-light rounded-3">
+                                        <small class="text-muted d-block uppercase fw-semibold mb-1">Address Details</small>
+                                        <span class="fw-bold text-dark">
+                                            <span th:text="${profile.address != null and !#strings.isEmpty(profile.address) ? profile.address : 'No address,'}"></span>
+                                            <span th:text="${profile.city != null and !#strings.isEmpty(profile.city) ? profile.city : ''}"></span>, 
+                                            <span th:text="${profile.state != null and !#strings.isEmpty(profile.state) ? profile.state : ''}"></span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="p-3 bg-light rounded-3 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <small class="text-muted d-block uppercase fw-semibold mb-1">Uploaded Resume</small>
+                                            <span th:if="${profile.user.resume != null}" class="fw-bold text-primary">
+                                                <i class="bi bi-file-earmark-text me-1"></i>
+                                                <span th:text="${profile.user.resume.fileName}">resume.pdf</span>
+                                            </span>
+                                            <span th:unless="${profile.user.resume != null}" class="text-muted small">No resume uploaded yet</span>
+                                        </div>
+                                        <a th:href="@{/candidate/resume}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="bi bi-file-earmark-arrow-up me-1"></i> 
+                                            <span th:text="${profile.user.resume != null} ? 'Update Resume' : 'Upload Resume'">Upload</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

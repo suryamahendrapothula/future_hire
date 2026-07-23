@@ -1,0 +1,41 @@
+Java
+Spring Boot
+Spring
+Hibernate
+JPA
+MySQL
+SQL
+Angular
+React
+Node.js
+JavaScript
+TypeScript
+HTML
+CSS
+Bootstrap
+AWS
+Docker
+Kubernetes
+Git
+GitHub
+REST API
+Microservices
+Maven
+Gradle
+Python
+C
+C++
+Machine Learning
+Deep Learning
+TensorFlow
+PyTorch
+LangChain
+LangGraph
+OpenAI
+Linux
+Redis
+MongoDB
+PostgreSQL
+Jenkins
+Kafka
+RabbitMQ

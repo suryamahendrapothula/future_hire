@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Candidate Dashboard')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Content Container -->
+    <div class="container my-5">
+        
+        <!-- Welcome Message -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h2 class="fw-bold mb-1">Welcome back, <span th:text="${#authentication.name}">Candidate</span>! 👋</h2>
+                <p class="text-muted mb-0">Track your application progress, resume stats, and apply to new job postings.</p>
+            </div>
+            <div>
+                <a th:href="@{/candidate/resume}" class="btn btn-primary shadow-sm rounded-pill px-4">
+                    <i class="bi bi-file-earmark-arrow-up me-1"></i> Update Resume
+                </a>
+            </div>
+        </div>
+
+        <!-- Success Alert for Job Application -->
+        <div th:if="${param.applied}" class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> Application submitted successfully! Good luck with your process.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Warning Alert for Missing Resume -->
+        <div th:if="${param.error != null and param.error[0] == 'MissingResume'}" class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> Please upload your resume in the 'Upload Resume' tab before starting the AI Interview.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Stat Cards Row -->
+        <div class="row g-4 mb-4">
+            
+            <!-- Applications Stat Card -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-muted fw-semibold uppercase mb-0">Applications</h6>
+                            <span class="bg-primary-subtle text-primary p-2 rounded-3"><i class="bi bi-briefcase fs-5"></i></span>
+                        </div>
+                        <h2 class="fw-bold mb-1" th:text="${stats.applications}">0</h2>
+                        <a th:href="@{/candidate/applications}" class="text-primary text-decoration-none small fw-bold">View List <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interviews Stat Card -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-muted fw-semibold uppercase mb-0">AI Interviews</h6>
+                            <span class="bg-success-subtle text-success p-2 rounded-3"><i class="bi bi-robot fs-5"></i></span>
+                        </div>
+                        <h2 class="fw-bold mb-1" th:text="${stats.interviews}">0</h2>
+                        <a th:href="@{/candidate/applications}" class="text-success text-decoration-none small fw-bold">Go to Interviews <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Status Stat Card -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-muted fw-semibold uppercase mb-0">Resume Status</h6>
+                            <span class="bg-info-subtle text-info p-2 rounded-3"><i class="bi bi-file-earmark-text fs-5"></i></span>
+                        </div>
+                        <div class="mb-2">
+                            <span class="badge bg-success px-3 py-2 rounded-pill" th:if="${stats.resumeUploaded}">
+                                <i class="bi bi-check-circle-fill me-1"></i> Uploaded
+                            </span>
+                            <span class="badge bg-danger px-3 py-2 rounded-pill" th:unless="${stats.resumeUploaded}">
+                                <i class="bi bi-x-circle-fill me-1"></i> Missing
+                            </span>
+                        </div>
+                        <a th:href="@{/candidate/resume}" class="text-info text-decoration-none small fw-bold">Upload Options <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Score Stat Card -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-4 h-100 position-relative overflow-hidden card-hover">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="text-muted fw-semibold uppercase mb-0">AI Profile Score</h6>
+                            <span class="bg-warning-subtle text-warning p-2 rounded-3"><i class="bi bi-stars fs-5"></i></span>
+                        </div>
+                        <h2 class="fw-bold mb-1" th:text="${resume != null ? resume.aiScore + '%' : 'N/A'}">--</h2>
+                        <span class="text-muted small">Based on parsed resume skills</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Skills and Profile Overview Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                            <i class="bi bi-tags-fill text-primary"></i>
+                            <span>Detected Skills from Resume</span>
+                            <span class="badge bg-primary rounded-pill ms-2" th:text="${skillCount}">0</span>
+                        </h5>
+
+                        <div th:if="${#lists.isEmpty(skills)}" class="py-3 text-center">
+                            <p class="text-muted mb-2">No skills detected. Upload a resume to automatically extract your skills.</p>
+                            <a th:href="@{/candidate/resume}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                <i class="bi bi-file-earmark-arrow-up me-1"></i> Upload Resume
+                            </a>
+                        </div>
+
+                        <div th:unless="${#lists.isEmpty(skills)}" class="d-flex flex-wrap gap-2 pt-2">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill" th:each="candidateSkill : ${skills}" th:text="${candidateSkill.skill.name}">
+                                Java
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Jobs Card -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0"><i class="bi bi-list-stars text-primary me-2"></i>Available Job Postings</h5>
+                <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill" th:text="${jobs.size() + ' jobs available'}">0 jobs</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light py-3 border-bottom-0">
+                            <tr>
+                                <th class="ps-4 py-3">Job Title</th>
+                                <th class="py-3">Company</th>
+                                <th class="py-3">Location</th>
+                                <th class="py-3">Experience</th>
+                                <th class="py-3">Salary Range</th>
+                                <th class="text-end pe-4 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(jobs)}">
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                    No active jobs available right now. Please check back later.
+                                </td>
+                            </tr>
+                            <tr th:each="job : ${jobs}">
+                                <td class="ps-4">
+                                    <div class="fw-bold text-dark" th:text="${job.title}">Software Engineer</div>
+                                </td>
+                                <td th:text="${job.company}">FutureHire Corp</td>
+                                <td>
+                                    <span class="text-secondary"><i class="bi bi-geo-alt me-1"></i><span th:text="${job.location}">Remote</span></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3 py-1" th:text="${job.experienceRequired}">1-3 Years</span>
+                                </td>
+                                <td class="fw-semibold text-success" th:text="${job.salary}">$80k - $100k</td>
+                                <td class="text-end pe-4">
+                                    <a th:href="@{/candidate/jobs/{id}(id=${job.id})}" class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

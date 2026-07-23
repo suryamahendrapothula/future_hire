@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head('AI Interview Session')}"></head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Simple header for focused interview environment (no full navbar to prevent navigation away) -->
+    <nav class="navbar navbar-light bg-white shadow-sm py-3 mb-5">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span class="navbar-brand fw-extrabold text-primary mb-0"><i class="bi bi-cpu-fill me-2"></i>FutureHire AI
+                Interview</span>
+            <span class="badge bg-danger rounded-pill px-3 py-2"><i class="bi bi-shield-fill-exclamation me-1"></i> Do
+                Not Refresh</span>
+        </div>
+    </nav>
+
+    <!-- Session Container -->
+    <div class="container my-auto py-3">
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-8">
+
+                <!-- Progress Bar -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-semibold text-muted small">Interview Progress</span>
+                        <span class="fw-bold text-primary small"
+                            th:text="${'Question ' + question.questionNumber + ' of 10'}">Question 1 of 10</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                            th:style="'width: ' + ${question.questionNumber * 10} + '%'"
+                            th:aria-valuenow="${question.questionNumber * 10}" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Question Card -->
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-5">
+                    <div class="card-header bg-success text-white py-3 px-4 d-flex align-items-center gap-2">
+                        <i class="bi bi-robot fs-5"></i>
+                        <h5 class="fw-bold mb-0">Interview Question</h5>
+                    </div>
+
+                    <div class="card-body p-4 p-md-5">
+
+                        <!-- Question Content -->
+                        <div class="p-4 bg-light rounded-4 border-start border-4 border-success mb-4">
+                            <h4 class="fw-bold text-dark lh-base mb-0" th:text="${question.question}">Explain
+                                Object-Oriented Programming.</h4>
+                        </div>
+
+                        <!-- Answer Submission Form -->
+                        <form th:action="@{/candidate/interview/submit}" method="post">
+                            <input type="hidden" name="questionId" th:value="${question.id}" />
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-dark mb-2">Provide Your Technical Answer:</label>
+                                <textarea name="answer" class="form-control rounded-3 p-3 text-secondary" rows="8"
+                                    placeholder="Type your explanation here. Be concise and precise. Mention core principles, architecture, or syntax examples if applicable..."
+                                    required></textarea>
+                                <div class="form-text text-muted small mt-2">
+                                    <i class="bi bi-info-circle me-1"></i> Responses should be in English. Answer will
+                                    be parsed by the automated evaluator.
+                                </div>
+                            </div>
+
+                            <button
+                                class="btn btn-success btn-lg px-5 rounded-pill shadow-sm py-3 fw-bold d-inline-flex align-items-center gap-2">
+                                <span>Submit Answer & Continue</span>
+                                <i class="bi bi-arrow-right-short fs-4"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+
+</html>

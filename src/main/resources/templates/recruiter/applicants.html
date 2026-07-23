@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Applicants Listing')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Main Container -->
+    <div class="container my-5">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">
+                    Applicants for <span class="text-primary" th:text="${job.title}">Job</span>
+                </h2>
+                <p class="text-muted mb-0">Evaluate candidates, review parsed resumes, and update statuses.</p>
+            </div>
+            <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to Jobs
+            </a>
+        </div>
+
+        <!-- Analytics Cards Row -->
+        <div class="row g-4 mb-4" th:if="${!#lists.isEmpty(applications)}">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-success-subtle text-success p-3 rounded-4">
+                            <i class="bi bi-graph-up-arrow fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted fw-semibold uppercase mb-1" style="font-size: 0.75rem;">Average Interview Score</h6>
+                            <h3 class="fw-extrabold mb-0" th:text="${averageScore + '%'}">0.0%</h3>
+                            <small class="text-muted" th:text="'Calculated across ' + ${completedCount} + ' completed interview(s)'">0 interviews</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3">
+                    <div class="card-body d-flex align-items-center gap-3">
+                        <div class="bg-primary-subtle text-primary p-3 rounded-4">
+                            <i class="bi bi-people-fill fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted fw-semibold uppercase mb-1" style="font-size: 0.75rem;">Total Applicants</h6>
+                            <h3 class="fw-extrabold mb-0" th:text="${#lists.size(applications)}">0</h3>
+                            <small class="text-muted">Applications submitted</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applicants Table Card -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light py-3 border-bottom-0">
+                            <tr>
+                                <th class="ps-4 py-3">Candidate Name</th>
+                                <th class="py-3">Email Address</th>
+                                <th class="py-3">Status</th>
+                                <th class="py-3">AI Score</th>
+                                <th class="py-3">Resume details</th>
+                                <th class="py-3">Interview Status / Score</th>
+                                <th class="text-end pe-4 py-3">Status Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Empty State -->
+                            <tr th:if="${#lists.isEmpty(applications)}">
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                    No candidates have applied for this job posting yet.
+                                </td>
+                            </tr>
+                            
+                            <!-- Application Entries -->
+                            <tr th:each="app : ${applications}">
+                                <td class="ps-4">
+                                    <div class="fw-bold text-dark" th:text="${app.candidate.fullName}">John Doe</div>
+                                </td>
+                                <td th:text="${app.candidate.email}">john@example.com</td>
+                                <td>
+                                    <!-- Status Badges -->
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Applied' or app.status == null}" 
+                                          th:text="${app.status ?: 'Applied'}">
+                                        Applied
+                                    </span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Shortlisted'}" 
+                                          th:text="${app.status}">
+                                        Shortlisted
+                                    </span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Rejected'}" 
+                                          th:text="${app.status}">
+                                        Rejected
+                                    </span>
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status != 'Applied' and app.status != null and app.status != 'Shortlisted' and app.status != 'Rejected'}" 
+                                          th:text="${app.status}">
+                                        Unknown
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- AI Score logic with null check -->
+                                    <span th:if="${app.candidate.resume != null}" class="fw-bold" 
+                                          th:classappend="${app.candidate.resume.aiScore >= 80} ? 'text-success' : (${app.candidate.resume.aiScore >= 50} ? 'text-warning' : 'text-danger')"
+                                          th:text="${app.candidate.resume.aiScore + '%'}">
+                                        90%
+                                    </span>
+                                    <span th:unless="${app.candidate.resume != null}" class="text-muted small">
+                                        No Resume
+                                    </span>
+                                </td>
+                                <td>
+                                    <th:block th:if="${app.candidate.resume != null}">
+                                        <a th:href="@{/recruiter/jobs/resume/{id}(id=${app.candidate.id})}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="bi bi-file-earmark-text me-1"></i> Review Resume
+                                        </a>
+                                        <a th:href="@{/recruiter/jobs/resume/download/{id}(id=${app.candidate.resume.id})}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 ms-1" title="Download PDF">
+                                            <i class="bi bi-download me-1"></i> Download PDF
+                                        </a>
+                                    </th:block>
+                                    <span th:unless="${app.candidate.resume != null}" class="text-muted small">
+                                        -
+                                    </span>
+                                </td>
+                                <td>
+                                    <th:block th:if="${app.status == 'Shortlisted'}">
+                                        <th:block th:with="interview=${interviews.get(app.id)}">
+                                            <!-- Not Started -->
+                                            <span th:if="${interview == null}" class="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill">
+                                                Not Started
+                                            </span>
+                                            
+                                            <!-- In Progress -->
+                                            <span th:if="${interview != null and interview.status == 'IN_PROGRESS'}" class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill">
+                                                In Progress
+                                            </span>
+                                            
+                                            <!-- Completed -->
+                                            <div th:if="${interview != null and interview.status == 'COMPLETED'}" class="d-inline-flex align-items-center gap-2">
+                                                <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill fw-bold" th:text="${interview.overallScore + '%'}">
+                                                    85%
+                                                </span>
+                                                <a th:href="@{/recruiter/jobs/interview/{id}(id=${interview.id})}" class="btn btn-outline-primary btn-sm rounded-pill px-3" title="View Transcript">
+                                                    <i class="bi bi-eye me-1"></i> View Report
+                                                </a>
+                                            </div>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:unless="${app.status == 'Shortlisted'}">
+                                        <span class="text-muted small">-</span>
+                                    </th:block>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <!-- Shortlist -->
+                                        <a th:href="@{/recruiter/jobs/applications/{id}/shortlist(id=${app.id})}" class="btn btn-success btn-sm rounded-pill px-3 shadow-sm">
+                                            <i class="bi bi-check-lg me-1"></i> Shortlist
+                                        </a>
+                                        <!-- Reject -->
+                                        <a th:href="@{/recruiter/jobs/applications/{id}/reject(id=${app.id})}" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                                            <i class="bi bi-x-lg me-1"></i> Reject
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

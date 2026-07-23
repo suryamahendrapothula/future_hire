@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('My Applications')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Container -->
+    <div class="container my-5">
+        
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h2 class="fw-bold mb-1"><i class="bi bi-briefcase text-primary me-2"></i>My Job Applications</h2>
+                <p class="text-muted mb-0">Monitor the review status of your applications and complete interviews.</p>
+            </div>
+            <div>
+                <a th:href="@{/candidate/dashboard}" class="btn btn-outline-secondary rounded-pill px-4">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light py-3 border-bottom-0">
+                            <tr>
+                                <th class="ps-4 py-3">Job Title</th>
+                                <th class="py-3">Company</th>
+                                <th class="py-3">Location</th>
+                                <th class="py-3">Status</th>
+                                <th class="text-end pe-4 py-3">Interview Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Empty State -->
+                            <tr th:if="${#lists.isEmpty(applications)}">
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+                                    You haven't applied for any jobs yet.
+                                    <div class="mt-3">
+                                        <a th:href="@{/candidate/dashboard}" class="btn btn-primary btn-sm rounded-pill px-4">
+                                            Search Jobs
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Application Entries -->
+                            <tr th:each="app : ${applications}">
+                                <td class="ps-4">
+                                    <div class="fw-bold text-dark" th:text="${app.job.title}">Software Engineer</div>
+                                </td>
+                                <td th:text="${app.job.company}">Tech Corp</td>
+                                <td>
+                                    <span class="text-secondary"><i class="bi bi-geo-alt me-1"></i><span th:text="${app.job.location}">Remote</span></span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Applied' or app.status == null}" 
+                                          th:text="${app.status ?: 'Applied'}">
+                                        Applied
+                                    </span>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Shortlisted'}" 
+                                          th:text="${app.status}">
+                                        Shortlisted
+                                    </span>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status == 'Rejected'}" 
+                                          th:text="${app.status}">
+                                        Rejected
+                                    </span>
+                                    <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-1 rounded-pill" 
+                                          th:if="${app.status != 'Applied' and app.status != null and app.status != 'Shortlisted' and app.status != 'Rejected'}" 
+                                          th:text="${app.status}">
+                                        Unknown
+                                    </span>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <!-- Interview Completed Badge -->
+                                    <span th:if="${interviewMap != null and interviewMap.get(app.id) != null and interviewMap.get(app.id).status == 'COMPLETED'}" 
+                                          class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill shadow-sm">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Interview Completed
+                                    </span>
+
+                                    <!-- Resume Interview Button -->
+                                    <a th:if="${(interviewMap == null or interviewMap.get(app.id) == null or interviewMap.get(app.id).status != 'COMPLETED') and app.status == 'Shortlisted' and interviewMap != null and interviewMap.get(app.id) != null and interviewMap.get(app.id).status == 'IN_PROGRESS'}" 
+                                       th:href="@{/candidate/interview/{id}(id=${app.id})}" 
+                                       class="btn btn-warning btn-sm rounded-pill px-4 shadow-sm text-dark fw-semibold">
+                                        <i class="bi bi-play-fill me-1"></i> Resume Interview
+                                    </a>
+
+                                    <!-- Start AI Interview Button (Shortlisted & Not Started) -->
+                                    <a th:if="${app.status == 'Shortlisted' and (interviewMap == null or interviewMap.get(app.id) == null)}" 
+                                       th:href="@{/candidate/interview/{id}(id=${app.id})}" 
+                                       class="btn btn-success btn-sm rounded-pill px-4 shadow-sm">
+                                        <i class="bi bi-robot me-1"></i> Start AI Interview
+                                    </a>
+
+                                    <!-- Fallback text for other statuses -->
+                                    <span class="text-muted small" th:if="${app.status == 'Applied' or app.status == null}">
+                                        <i class="bi bi-clock-history me-1"></i> Under Review
+                                    </span>
+                                    <span class="text-danger small" th:if="${app.status == 'Rejected'}">
+                                        <i class="bi bi-x-circle me-1"></i> Application Closed
+                                    </span>
+                                    <span class="text-muted small" th:if="${app.status != 'Applied' and app.status != null and app.status != 'Shortlisted' and app.status != 'Rejected' and (interviewMap == null or interviewMap.get(app.id) == null)}">
+                                        -
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Resume Analysis Details')}"></head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Container -->
+    <div class="container my-5">
+        
+        <!-- Breadcrumb / Back Navigation -->
+        <div class="mb-4">
+            <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to Jobs
+            </a>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Left Overview Column -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 text-center p-4">
+                    <div class="card-body">
+                        
+                        <div class="bg-primary-subtle text-primary d-inline-flex p-3 rounded-circle mb-3">
+                            <i class="bi bi-file-earmark-check fs-1"></i>
+                        </div>
+                        
+                        <h4 class="fw-bold mb-2">Resume Evaluation</h4>
+                        <p class="text-secondary small mb-3" th:text="${resume.fileName}">resume.pdf</p>
+                        
+                        <div class="mb-4">
+                            <a th:href="@{/recruiter/jobs/resume/download/{id}(id=${resume.id})}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 w-100 shadow-sm">
+                                <i class="bi bi-download me-1"></i> Download PDF
+                            </a>
+                        </div>
+                        
+                        <hr class="my-4 text-muted opacity-25">
+                        
+                        <!-- AI Score Badge/Gauge -->
+                        <div class="mb-4">
+                            <small class="text-muted d-block uppercase fw-semibold mb-2">AI Score</small>
+                            <h2 class="display-4 fw-extrabold text-success mb-1" th:text="${resume.aiScore + '%'}">90%</h2>
+                            
+                            <!-- Simple progress bar -->
+                            <div class="progress mt-3 mx-auto" style="height: 8px; max-width: 200px;">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     th:style="'width: ' + ${resume.aiScore} + '%'" 
+                                     th:aria-valuenow="${resume.aiScore}" 
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-light rounded-3 text-start">
+                            <small class="text-muted d-block uppercase fw-semibold mb-1">Experience Level</small>
+                            <span class="fw-bold text-dark" th:text="${resume.experienceLevel ?: 'Fresher'}">Fresher</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Detailed Content Column -->
+            <div class="col-lg-8">
+                <div class="d-flex flex-column gap-4">
+                    
+                    <!-- AI Summary -->
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-robot text-primary me-2"></i>AI Executive Summary</h5>
+                            <p class="text-secondary lh-lg mb-0" th:text="${resume.summary ?: 'No summary available.'}">Summary details...</p>
+                        </div>
+                    </div>
+
+                    <!-- Strengths and Weaknesses -->
+                    <div class="row g-4">
+                        
+                        <!-- Strengths Card -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-4 border-success">
+                                <div class="card-body p-4">
+                                    <h5 class="fw-bold text-success mb-3"><i class="bi bi-plus-circle me-2"></i>Strengths</h5>
+                                    
+                                    <ul class="list-unstyled mb-0" th:if="${resume.strengths != null and !#strings.isEmpty(resume.strengths)}">
+                                        <li class="d-flex align-items-start gap-2 mb-2 text-secondary lh-base" 
+                                            th:each="strength : ${resume.strengths.split('\r?\n')}">
+                                            <span class="text-success"><i class="bi bi-patch-check-fill"></i></span>
+                                            <span th:text="${strength}">Strength point</span>
+                                        </li>
+                                    </ul>
+                                    <p class="text-muted small mb-0" th:unless="${resume.strengths != null and !#strings.isEmpty(resume.strengths)}">
+                                        No strengths identified.
+                                    </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weaknesses Card -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100 border-start border-4 border-danger">
+                                <div class="card-body p-4">
+                                    <h5 class="fw-bold text-danger mb-3"><i class="bi bi-dash-circle me-2"></i>Weaknesses</h5>
+                                    
+                                    <ul class="list-unstyled mb-0" th:if="${resume.weaknesses != null and !#strings.isEmpty(resume.weaknesses)}">
+                                        <li class="d-flex align-items-start gap-2 mb-2 text-secondary lh-base" 
+                                            th:each="weakness : ${resume.weaknesses.split('\r?\n')}">
+                                            <span class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                                            <span th:text="${weakness}">Weakness point</span>
+                                        </li>
+                                    </ul>
+                                    <p class="text-muted small mb-0" th:unless="${resume.weaknesses != null and !#strings.isEmpty(resume.weaknesses)}">
+                                        No weaknesses identified.
+                                    </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Suggested Roles -->
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-lightbulb text-primary me-2"></i>Suggested Job Roles</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                <th:block th:if="${resume.jobRoles != null and !#strings.isEmpty(resume.jobRoles)}">
+                                    <span th:each="role : ${resume.jobRoles.split('\r?\n')}" 
+                                          class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill" 
+                                          th:text="${role}">
+                                        Role
+                                    </span>
+                                </th:block>
+                                <span th:unless="${resume.jobRoles != null and !#strings.isEmpty(resume.jobRoles)}" class="text-muted small">No recommended job roles.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>
