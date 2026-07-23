@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "interview_answers")

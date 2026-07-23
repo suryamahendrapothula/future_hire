@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.entity.CandidateSkill;
 import com.example.demo.entity.User;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 
 public interface CandidateSkillRepository extends JpaRepository<CandidateSkill, Long> {
 

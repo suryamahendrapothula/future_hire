@@ -19,8 +19,8 @@ public class SecurityConfig {
 
         http
 
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
+            .authorizeRequests(auth -> auth
+                .antMatchers(
                         "/",
                         "/css/**",
                         "/js/**",
@@ -31,10 +31,10 @@ public class SecurityConfig {
                         "/recruiter/login"
                 ).permitAll()
 
-                .requestMatchers("/candidate/**")
+                .antMatchers("/candidate/**")
                 .hasRole("CANDIDATE")
 
-                .requestMatchers("/recruiter/**")
+                .antMatchers("/recruiter/**")
                 .hasRole("RECRUITER")
 
                 .anyRequest()

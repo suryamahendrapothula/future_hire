@@ -15,7 +15,7 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.ResumeRepository;
 import com.example.demo.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.entity.CandidateSkill;
