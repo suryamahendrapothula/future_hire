@@ -12,6 +12,7 @@ import com.example.demo.entity.CandidateProfile;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CandidateProfileService;
+import com.example.demo.dto.CandidateProfileDTO;
 
 @Controller
 @RequestMapping("/candidate/profile")
@@ -53,14 +54,25 @@ public class CandidateProfileController {
         return "candidate/edit-profile";
     }
     @PostMapping("/edit")
-    public String updateProfile(@ModelAttribute CandidateProfile profile,
+    public String updateProfile(@ModelAttribute("profile") CandidateProfileDTO profileDto,
                                 Authentication authentication) {
 
         User user = userRepository
                 .findByEmail(authentication.getName())
                 .orElseThrow();
 
-        profile.setUser(user);
+        CandidateProfile profile = profileService.getProfile(user);
+        profile.setPhone(profileDto.getPhone());
+        profile.setDateOfBirth(profileDto.getDateOfBirth());
+        profile.setGender(profileDto.getGender());
+        profile.setAddress(profileDto.getAddress());
+        profile.setCity(profileDto.getCity());
+        profile.setState(profileDto.getState());
+        profile.setCountry(profileDto.getCountry());
+        profile.setLinkedin(profileDto.getLinkedin());
+        profile.setGithub(profileDto.getGithub());
+        profile.setPortfolio(profileDto.getPortfolio());
+        profile.setAbout(profileDto.getAbout());
 
         profileService.saveProfile(profile);
 

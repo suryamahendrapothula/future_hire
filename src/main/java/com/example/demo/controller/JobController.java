@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.Job;
 import com.example.demo.service.JobService;
 import org.springframework.stereotype.Controller;
+import com.example.demo.dto.JobDTO;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.Application;
@@ -71,14 +72,33 @@ private static final String REDIRECT_UNAUTHORIZED =
 	}
 
 	@PostMapping("/save")
-	public String saveJob(@ModelAttribute("job") Job job,
+	public String saveJob(@ModelAttribute("job") JobDTO jobDto,
 	                      Authentication authentication) {
 
 	    User recruiter = userRepository
 	            .findByEmail(authentication.getName())
 	            .orElseThrow();
 
-	    job.setRecruiter(recruiter);
+	    Job job;
+	    if (jobDto.getId() != null) {
+	        job = jobService.getJobById(jobDto.getId());
+	        if (isNotOwner(job, authentication)) {
+	            return REDIRECT_UNAUTHORIZED;
+	        }
+	    } else {
+	        job = new Job();
+	        job.setRecruiter(recruiter);
+	    }
+
+	    job.setTitle(jobDto.getTitle());
+	    job.setDescription(jobDto.getDescription());
+	    job.setCompany(jobDto.getCompany());
+	    job.setLocation(jobDto.getLocation());
+	    job.setEmploymentType(jobDto.getEmploymentType());
+	    job.setExperienceRequired(jobDto.getExperienceRequired());
+	    job.setSalary(jobDto.getSalary());
+	    job.setRequiredSkills(jobDto.getRequiredSkills());
+	    job.setActive(jobDto.isActive());
 
 	    jobService.saveJob(job);
 
