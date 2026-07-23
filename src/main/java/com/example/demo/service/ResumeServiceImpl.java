@@ -64,7 +64,18 @@ public class ResumeServiceImpl implements ResumeService {
             directory.mkdirs();
         }
 
-        Path path = Paths.get(uploadDir, file.getOriginalFilename());
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isEmpty()) {
+            throw new ResumeUploadException("Invalid file name");
+        }
+
+        // Extract only the file name to prevent path traversal
+        String cleanedFilename = Paths.get(originalFilename).getFileName().toString();
+        if (cleanedFilename.contains("..") || cleanedFilename.isEmpty()) {
+            throw new ResumeUploadException("Invalid file name: " + originalFilename);
+        }
+
+        Path path = Paths.get(uploadDir, cleanedFilename);
 
         try {
             Files.copy(

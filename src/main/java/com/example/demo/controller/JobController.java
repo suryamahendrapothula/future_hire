@@ -271,7 +271,11 @@ private static final String REDIRECT_UNAUTHORIZED =
 		}
 
 		try {
-			Path filePath = Paths.get(resume.getFilePath());
+			Path filePath = Paths.get(resume.getFilePath()).normalize();
+			Path baseDir = Paths.get("uploads").toAbsolutePath().normalize();
+			if (!filePath.toAbsolutePath().startsWith(baseDir)) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
 			Resource resource = new UrlResource(filePath.toUri());
 
 			if (resource.exists() || resource.isReadable()) {
