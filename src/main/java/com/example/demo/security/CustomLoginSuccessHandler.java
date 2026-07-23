@@ -23,16 +23,16 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         for (GrantedAuthority authority : authentication.getAuthorities()) {
 
             if (authority.getAuthority().equals("ROLE_RECRUITER")) {
-                response.sendRedirect("/recruiter/dashboard");
+                response.sendRedirect(request.getContextPath() + "/recruiter/dashboard");
                 return;
             }
 
             if (authority.getAuthority().equals("ROLE_CANDIDATE")) {
-                response.sendRedirect("/candidate/dashboard");
+                response.sendRedirect(request.getContextPath() + "/candidate/dashboard");
                 return;
             }
         }
 
-        response.sendRedirect("/");
+        response.sendRedirect(request.getContextPath() + "/");
     }
 }
